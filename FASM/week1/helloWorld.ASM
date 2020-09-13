@@ -6,7 +6,7 @@ include 'win32a.inc'
 
 section '.data' data readable writable
 
-        helloMsg db 'Hello, world!', 0 ;Даем компилятору понять, что далее ничего не будет.
+        helloMsg db 'Hello, world!', 0 
 
         NULL = 0
 
