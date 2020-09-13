@@ -16,7 +16,7 @@ section 'data' data readable writable
         ho db 'How old are you? ', 0
         hello db 'Hello %s, you are %d years old.', 0
 
-        address db 10, 13, 'name string address is %d' ;10, 13, - Перенос каретки
+        address db 10, 13, 'name string address is %d' ;10, 13, - \n
 
         NULL = 0
 
@@ -27,7 +27,7 @@ section '.code' code readable executable
                 push wn
                 call [printf]
 
-                ;Т.к стек, параметры наоборот
+                ;pushing to stack
                 push name
                 push formatStr
                 call [scanf]
@@ -44,7 +44,7 @@ section '.code' code readable executable
                 push hello
                 call [printf]
 
-                lea eax, [formatStr] ;Получение адреса данных
+                lea eax, [formatStr] ;data address
 
                 push eax
                 push address
