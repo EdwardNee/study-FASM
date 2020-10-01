@@ -114,6 +114,7 @@ InitA:
                 jmp lAcont
 
 InitB:
+
         mov [arrayB], eax
         mov [cnt], 0
         mov [i], 0
@@ -141,6 +142,7 @@ InitB:
                 cmp ecx, [N]
                 jne lB
 
+        mov [i], -1
         ret
 
         NotEqualToFirst:
@@ -237,7 +239,7 @@ Print:
         endwr:
 
                 cinvoke printf, slashn
-
+                mov [i], -1
                 ret
 
 EqualityTwo:
