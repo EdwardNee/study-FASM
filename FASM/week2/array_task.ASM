@@ -180,7 +180,7 @@ PrepDA:
 
         cinvoke printf, slashn
         cinvoke printf, strA
-
+        mov [i], -1
         call Print
 
         ret
@@ -193,7 +193,7 @@ PrepDB:
         mov ecx, [M]
         mov [cnt], ecx
         cinvoke printf, strB
-
+        mov [i], -1
         call Print
 
         ret
@@ -207,7 +207,6 @@ PrepDB:
 
 Print:
 
-        mov [i], -1
         cmp [cnt], 0
         jle endwr
         pl:
