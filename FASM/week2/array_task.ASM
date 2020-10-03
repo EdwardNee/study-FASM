@@ -78,14 +78,14 @@ InitA:
 
                 mov ecx, [i]
                 ;indexes /4
-                imul ecx, dword 4
+                imul ecx, 4
                 mov eax, [arrayA]
                 add eax, ecx
                 mov ecx, [eax]
                 cinvoke scanf, element, eax
 
                 mov ecx, [i]
-                imul ecx, dword 4
+                imul ecx, 4
 
                 mov eax, [arrayA]
                 add eax, ecx
@@ -127,7 +127,7 @@ InitB:
                 ;Getting element from array
                 mov [copyAr], eax
                 mov ecx, [i]
-                imul ecx, dword 4
+                imul ecx, 4
                 mov eax, [copyAr]
                 add eax, ecx
                 mov ecx, [eax]
@@ -153,7 +153,7 @@ InitB:
                 mov [helpEl], ecx
 
                 mov ecx, [cnt]
-                imul ecx, dword 4
+                imul ecx, 4
                 mov eax, [arrayB]
                 add eax, ecx
 
@@ -214,7 +214,7 @@ Print:
                 add [i], 1
 
                 mov ecx, [i]
-                imul ecx, dword 4
+                imul ecx, 4
                 mov eax, [copyAr]
                 add eax, ecx
                 cinvoke printf, element, dword [eax]
@@ -254,7 +254,7 @@ cinvoke printf, strEnterN, [M]
                 add [i], 1
 
                 mov ecx, [i]
-                imul ecx, dword 4
+                imul ecx, 4
                 mov eax, [copyAr]
                 add eax, ecx
                 mov edx, [eax]
