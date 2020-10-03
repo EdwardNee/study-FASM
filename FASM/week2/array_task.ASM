@@ -35,21 +35,26 @@ section '.code' code readable executable
 
                 call Read_N
 
-                invoke HeapCreate, HEAP_NO_SERIALIZE, 0, 0
+                ;reserve memory for Initial
+                invoke GetProcessHeap
                 mov [_heap], eax
-                invoke HeapAlloc,[_heap], HEAP_NO_SERIALIZE, N ;reserve memory for Initial
+                invoke HeapAlloc,[_heap], 0, N
+                mov [arrayA],eax
+
                 call InitA
                 call Reload
                 call EqualityTwo
                 call PrepDA
                 cinvoke printf, slashn
 
-                invoke HeapAlloc,[_heap], HEAP_NO_SERIALIZE, M ;reserve memory for Result
+                invoke HeapAlloc,[_heap], 0, M ;reserve memory for Result
+                mov [arrayB],eax
+
                 call InitB
                 call PrepDB
 
-                invoke HeapFree, _heap, 0, arrayA
-                invoke HeapFree, _heap, 0, arrayB
+                invoke HeapFree,[_heap], 0, [arrayA]
+                invoke HeapFree, [_heap], 0, [arrayB]
 
                 call [getch]
 
@@ -281,7 +286,7 @@ section '.idata' import data readable
 
         library kernel, 'kernel32.dll',\
                 msvcrt, 'msvcrt.dll',\
-                user32,'user32.'
+                user32,'user32.dll'
 
         import msvcrt,\
                printf, 'printf',\
@@ -289,7 +294,7 @@ section '.idata' import data readable
                getch, '_getch'
 
         import kernel,\
+               GetProcessHeap, 'GetProcessHeap',\
                ExitProcess, 'ExitProcess',\
-               HeapCreate, 'HeapCreate',\
-               HeapFree, 'HeapFree',\
-               HeapAlloc,'HeapAlloc'
+               HeapAlloc,'HeapAlloc',\
+               HeapFree, 'HeapFree'
