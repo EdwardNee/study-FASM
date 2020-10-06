@@ -8,23 +8,22 @@ section '.data' data readable writable
 
         element db '%d', 0
         helpEl dd ?
-        strEnterN db 'Enter N, array`s length: ', 0
+        strEnterSize db 'Enter N, array`s length: ', 0
         strA db 'A: ', 0
         strB db 'B: ', 0
 
-        slashn db 10, 13, 0
+        slashn db 10, 0, 0
         numerating db '  ', 0
 
         arrayA dd ?
         arrayB dd ?
+        buffer dd ?
         copyAr dd ?
-        _heap dd ?
 
-        N dd ?
-        M dd 0
-        minBound dd 0
+        sizeA dd ?
+        sizeB dd ?
         firstElem dd 0
-        cnt dd ?
+        cnt dd 0
         lastInd dd 0
         lastElem dd 0
         i dd -1
@@ -37,8 +36,8 @@ section '.code' code readable executable
 
                 ;reserve memory for Initial
                 invoke GetProcessHeap
-                mov [_heap], eax
-                invoke HeapAlloc,[_heap], 0, N
+                mov [buffer], eax
+                invoke HeapAlloc,[buffer], 0, sizeA
                 mov [arrayA],eax
 
                 call InitA
@@ -47,14 +46,15 @@ section '.code' code readable executable
                 call PrepDA
                 cinvoke printf, slashn
 
-                invoke HeapAlloc,[_heap], 0, M ;reserve memory for Result
+                invoke HeapAlloc,[buffer], 0, sizeB ;reserve memory for Out
                 mov [arrayB],eax
 
-                call InitB
+                call InitOut
+
                 call PrepDB
 
-                invoke HeapFree,[_heap], 0, [arrayA]
-                invoke HeapFree, [_heap], 0, [arrayB]
+                invoke HeapFree,[buffer], 0, [arrayA]
+                invoke HeapFree, [buffer], 0, [arrayB]
 
                 call [getch]
 
@@ -64,11 +64,11 @@ section '.code' code readable executable
 
 Read_N:
 
-        cinvoke printf, strEnterN
-        cinvoke scanf, element, N
+        cinvoke printf, strEnterSize
+        cinvoke scanf, element, sizeA
 
         ;Initialize lastInd
-        mov ecx, [N]
+        mov ecx, [sizeA]
         sub ecx, 1
 
         mov [lastInd], ecx
@@ -79,8 +79,7 @@ InitA:
         mov [arrayA], eax
 
         lA:
-                add [i], 1
-
+                inc [i]
                 mov ecx, [i]
                 ;indexes /4
                 imul ecx, 4
@@ -106,7 +105,7 @@ InitA:
 
                 mov ecx, [i]
                 add ecx, 1
-                cmp ecx, [N]
+                cmp ecx, [sizeA]
                 jne lA
 
          mov [i], -1
@@ -118,7 +117,7 @@ InitA:
 
                 jmp lAcont
 
-InitB:
+InitOut:
 
         mov [arrayB], eax
         mov [cnt], 0
@@ -126,8 +125,7 @@ InitB:
         jmp lB
 
         lB:
-                add [i], 1
-
+                inc [i]
                 mov eax, [arrayA]
                 ;Getting element from array
                 mov [copyAr], eax
@@ -144,14 +142,14 @@ InitB:
 
                 mov ecx, [i]
                 add ecx, 1
-                cmp ecx, [N]
+                cmp ecx, [sizeA]
                 jne lB
 
         mov [i], -1
         ret
 
         NotEqualToFirst:
-                add [M], 1
+                add [sizeB], 1
                 jmp lAcont
 
         adding:
@@ -171,7 +169,7 @@ InitB:
 Reload:
         mov eax, [arrayA]
         mov [copyAr], eax
-        mov ecx, [N]
+        mov ecx, [sizeA]
         mov [cnt], ecx
 
         ret
@@ -180,7 +178,7 @@ PrepDA:
 
         mov eax, [arrayA]
         mov [copyAr], eax
-        mov ecx, [N]   ;edx
+        mov ecx, [sizeA]   ;edx
         mov [cnt], ecx
 
         cinvoke printf, slashn
@@ -195,7 +193,7 @@ PrepDB:
         mov eax, [arrayB]
         ;mov eax, [arrayA]
         mov [copyAr], eax
-        mov ecx, [M]
+        mov ecx, [sizeB]
         mov [cnt], ecx
         cinvoke printf, strB
         mov [i], -1
@@ -216,8 +214,7 @@ Print:
         jle endwr
         pl:
 
-                add [i], 1
-
+                inc [i]
                 mov ecx, [i]
                 imul ecx, 4
                 mov eax, [copyAr]
@@ -253,11 +250,10 @@ EqualityTwo:
         cmp edx, [lastElem]
         jne looper
         jmp fend
-cinvoke printf, strEnterN, [M]
+cinvoke printf, strEnterSize, [sizeB]
 
         looper:
-                add [i], 1
-
+                inc [i]
                 mov ecx, [i]
                 imul ecx, 4
                 mov eax, [copyAr]
@@ -266,7 +262,7 @@ cinvoke printf, strEnterN, [M]
 
                 cmp edx, [lastElem]
                 jne contlooper
-                add[M], -1
+                add[sizeB], -1
                 contlooper:
 
                         mov ecx, [i]
@@ -298,3 +294,4 @@ section '.idata' import data readable
                ExitProcess, 'ExitProcess',\
                HeapAlloc,'HeapAlloc',\
                HeapFree, 'HeapFree'
+
