@@ -8,7 +8,7 @@ section '.data' data readable writable
 
         element db '%d', 0
         helpEl dd ?
-        strEnterSize db 'Enter N, array`s length: ', 0
+        strEnterSize db 'Enter array`s length: ', 0
         strA db 'A: ', 0
         strB db 'B: ', 0
 
