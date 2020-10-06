@@ -32,7 +32,7 @@ section '.code' code readable executable
 
         begin:
 
-                call Read_N
+                call ReadSize
 
                 ;reserve memory for Initial
                 invoke GetProcessHeap
@@ -62,7 +62,7 @@ section '.code' code readable executable
                 call [ExitProcess]
 
 
-Read_N:
+ReadSize:
 
         cinvoke printf, strEnterSize
         cinvoke scanf, element, sizeA
