@@ -15,10 +15,10 @@ section '.data' data readable writable
         slashn db 10, 0, 0
         numerating db '  ', 0
 
-        arrayA dd ?
-        arrayB dd ?
+        arrayA rd 4
+        arrayB rd 4
         buffer dd ?
-        copyAr dd ?
+        copyAr rd 4
 
         sizeA dd ?
         sizeB dd ?
@@ -81,8 +81,8 @@ InitA:
         lA:
                 inc [i]
                 mov ecx, [i]
-                ;indexes /4
-                imul ecx, 4
+
+                imul ecx, 4 ;shifting pointer/4
                 mov eax, [arrayA]
                 add eax, ecx
                 mov ecx, [eax]
