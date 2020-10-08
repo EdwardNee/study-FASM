@@ -37,8 +37,7 @@ section '.code' code readable executable
                 ;reserve memory for Initial
                 invoke GetProcessHeap
                 mov [buffer], eax
-                invoke HeapAlloc,[buffer], 0, sizeA
-                mov [arrayA],eax
+                invoke HeapAlloc, [buffer], 0, sizeA
 
                 call InitA
                 call Reload
@@ -46,14 +45,12 @@ section '.code' code readable executable
                 call PrepDA
                 cinvoke printf, slashn
 
-                invoke HeapAlloc,[buffer], 0, sizeB ;reserve memory for Out
-                mov [arrayB],eax
+                invoke HeapAlloc, [buffer], 0, sizeB ;reserve memory for Out
 
                 call InitOut
-
                 call PrepDB
 
-                invoke HeapFree,[buffer], 0, [arrayA]
+                invoke HeapFree, [buffer], 0, [arrayA]
                 invoke HeapFree, [buffer], 0, [arrayB]
 
                 call [getch]
@@ -294,4 +291,3 @@ section '.idata' import data readable
                ExitProcess, 'ExitProcess',\
                HeapAlloc,'HeapAlloc',\
                HeapFree, 'HeapFree'
-
