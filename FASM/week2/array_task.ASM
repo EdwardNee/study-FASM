@@ -58,8 +58,7 @@ section '.code' code readable executable
 
                 call [getch]
 
-                push 0
-                call [ExitProcess]
+                cinvoke ExitProcess, 0
 
 
 ReadSize:
@@ -295,3 +294,4 @@ section '.idata' import data readable
                ExitProcess, 'ExitProcess',\
                HeapAlloc,'HeapAlloc',\
                HeapFree, 'HeapFree'
+
