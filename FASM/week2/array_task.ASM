@@ -250,9 +250,9 @@ EqualityTwo:
 cinvoke printf, strEnterSize, [sizeB]
 
         looper:
+                mov eax, [copyAr]
                 mov ecx, [i]
                 imul ecx, 4
-                mov eax, [copyAr]
                 add eax, ecx
                 mov edx, [eax]
 
