@@ -26,7 +26,7 @@ section '.data' data readable writable
         cnt dd 0
         lastInd dd 0
         lastElem dd 0
-        i dd -1
+        i dd 0
 
 section '.code' code readable executable
 
@@ -79,13 +79,13 @@ InitA:
         mov [arrayA], eax
 
         lA:
-                inc [i]
+                mov eax, [arrayA]
                 mov ecx, [i]
 
                 imul ecx, 4 ;shifting pointer/4
-                mov eax, [arrayA]
                 add eax, ecx
                 mov ecx, [eax]
+
                 cinvoke scanf, element, eax
 
                 mov ecx, [i]
@@ -105,10 +105,11 @@ InitA:
 
                 mov ecx, [i]
                 add ecx, 1
+                inc [i]
                 cmp ecx, [sizeA]
                 jne lA
 
-         mov [i], -1
+         mov [i], 0
         ret
 
         check_equality:
@@ -121,13 +122,11 @@ InitOut:
 
         mov [arrayB], eax
         mov [cnt], 0
-        mov [i], 0
-        jmp lB
 
         lB:
-                inc [i]
+
                 mov eax, [arrayA]
-                ;Getting element from array
+                ;Taking element from array
                 mov [copyAr], eax
                 mov ecx, [i]
                 imul ecx, 4
@@ -142,10 +141,11 @@ InitOut:
 
                 mov ecx, [i]
                 add ecx, 1
+                inc [i]
                 cmp ecx, [sizeA]
                 jne lB
 
-        mov [i], -1
+        mov [i], 0
         ret
 
         NotEqualToFirst:
@@ -154,12 +154,12 @@ InitOut:
 
         adding:
                 mov [helpEl], ecx
+                mov eax, [arrayB]
 
                 mov ecx, [cnt]
                 imul ecx, 4
-                mov eax, [arrayB]
-                add eax, ecx
 
+                add eax, ecx
                 mov ecx, [helpEl]
                 mov [eax], ecx
 
@@ -183,7 +183,7 @@ PrepDA:
 
         cinvoke printf, slashn
         cinvoke printf, strA
-        mov [i], -1
+        mov [i], 0
         call Print
 
         ret
@@ -196,7 +196,7 @@ PrepDB:
         mov ecx, [sizeB]
         mov [cnt], ecx
         cinvoke printf, strB
-        mov [i], -1
+        mov [i], 0
         call Print
 
         ret
@@ -211,13 +211,13 @@ PrepDB:
 Print:
 
         cmp [cnt], 0
-        jle endwr
+        jbe endwr
         pl:
 
-                inc [i]
+                mov eax, [copyAr]
                 mov ecx, [i]
                 imul ecx, 4
-                mov eax, [copyAr]
+
                 add eax, ecx
                 cinvoke printf, element, dword [eax]
                 mov ecx, [i]
@@ -234,13 +234,14 @@ Print:
 
                         mov ecx, [i]
                         add ecx, 1
+                        inc [i]
                         cmp ecx, [cnt]
                         jne pl
 
         endwr:
 
                 cinvoke printf, slashn
-                mov [i], -1
+                mov [i], 0
                 ret
 
 EqualityTwo:
@@ -253,7 +254,6 @@ EqualityTwo:
 cinvoke printf, strEnterSize, [sizeB]
 
         looper:
-                inc [i]
                 mov ecx, [i]
                 imul ecx, 4
                 mov eax, [copyAr]
@@ -272,6 +272,7 @@ cinvoke printf, strEnterSize, [sizeB]
                         mov ecx, [i]
                         add ecx, 1
 
+                        inc [i]
                         cmp ecx, [cnt]
                         jne looper
         fend:
@@ -294,4 +295,3 @@ section '.idata' import data readable
                ExitProcess, 'ExitProcess',\
                HeapAlloc,'HeapAlloc',\
                HeapFree, 'HeapFree'
-
