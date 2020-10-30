@@ -31,11 +31,10 @@ section '.code' code readable executable
                 call FinishProgram    ;Finishing program
 
 
-
-
 Rec_meth:
 
         lp:
+
                 ;sum of values
                 mov eax, [t_1]
                 add eax, [t_2]
@@ -81,6 +80,7 @@ Rec_meth:
                 jmp lp
 
         lpEnd:
+
                 cinvoke printf, slashn  ;NewLine
                 cinvoke printf, strRes, [cnt] ;output cnt
 
